@@ -11,8 +11,6 @@ export class AuthService {
 
 
   signup(body: any){
-    console.log(body)
-
    return this.http.post('http://localhost:3000/signup',body)
    .pipe(shareReplay())
   }

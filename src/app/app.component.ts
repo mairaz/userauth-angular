@@ -12,11 +12,11 @@ export class AppComponent {
   form!: FormGroup;
 
   errors: string[] = []
-  messagePerErrorCode ={
-    min:'The minimum'
-
+  messagePerErrorCode: any = {
+    min: 'The minimum length is 10 characters.',
+    uppercase: 'At least one upper case character.',
+    digits: 'At least one numeric character.'
   }
-
 
   constructor(
     private authService: AuthService,
@@ -34,10 +34,10 @@ export class AppComponent {
         email: this.form.value.email,
         password: this.form.value.password
       }
-      this.authService.signup(payload).subscribe((res:any) => {
-         this.errors = res.error
-
-      })
+      this.authService.signup(payload).subscribe((res: any) => {
+        this.errors = []
+      },
+        (error) => { this.errors = error.error.errors })
     }
 
   }
