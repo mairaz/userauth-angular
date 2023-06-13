@@ -1,3 +1,5 @@
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from './services/auth.service';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +9,36 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'userauth-angular';
+  form!: FormGroup;
+
+  errors: string[] = []
+  messagePerErrorCode ={
+    min:'The minimum'
+
+  }
+
+
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder) {
+    this.form = this.fb.group({
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+      confirm: ['']
+    })
+  }
+
+  signup() {
+    if (this.form.valid) {
+      const payload = {
+        email: this.form.value.email,
+        password: this.form.value.password
+      }
+      this.authService.signup(payload).subscribe((res:any) => {
+         this.errors = res.error
+
+      })
+    }
+
+  }
 }
